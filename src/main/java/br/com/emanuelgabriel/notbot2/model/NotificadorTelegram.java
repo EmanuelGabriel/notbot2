@@ -1,7 +1,8 @@
 package br.com.emanuelgabriel.notbot2.model;
 
 
-import org.springframework.beans.factory.annotation.Value;
+import br.com.emanuelgabriel.notbot2.configuration.properties.TelegramProperties;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -14,30 +15,26 @@ import java.util.logging.Logger;
  * @author Emanuel Gabriel
  * Classe responsável por enviar notificações via Telegram.
  */
+@Component
 public class NotificadorTelegram extends TelegramLongPollingBot implements Notificador {
 
     private static final Logger LOGGER = Logger.getLogger(NotificadorTelegram.class.getName());
 
-    @Value("${prop.telegram.chatId}")
-    private String chatIdTelegram;
+    private final TelegramProperties telegramProperties;
 
-    @Value("${prop.telegram.botToken}")
-    private String tokenTelegram;
-
-    @Value("${prop.telegram.botUsername}")
-    private String botUsernameTelegram;
-
-    public NotificadorTelegram() {
+    public NotificadorTelegram(TelegramProperties telegramProperties) {
+        this.telegramProperties = telegramProperties;
     }
+
 
     @Override
     public void enviarMensagem(String titulo, String link, final String dataPublicacao) {
         try {
 
-            var texto = String.format("Novo vídeo: **%s** (Publicado em: %s) 🔗 %s", titulo, dataPublicacao, link);
+            var texto = String.format("Novo vídeo: *%s* (Publicado em: %s) 🔗 %s", titulo, dataPublicacao, link);
 
             var sendMessage = new SendMessage();
-            sendMessage.setChatId(chatIdTelegram);
+            sendMessage.setChatId(telegramProperties.getChatId());
             sendMessage.setText(texto);
             sendMessage.enableMarkdown(true);
 
@@ -55,7 +52,7 @@ public class NotificadorTelegram extends TelegramLongPollingBot implements Notif
      */
     @Override
     public String getBotUsername() {
-        return botUsernameTelegram;
+        return telegramProperties.getBotUsername();
     }
 
     /**
@@ -65,7 +62,7 @@ public class NotificadorTelegram extends TelegramLongPollingBot implements Notif
      */
     @Override
     public String getBotToken() {
-        return tokenTelegram;
+        return telegramProperties.getBotToken();
     }
 
     /**

@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
+//@EnableConfigurationProperties(TelegramProperties.class)
 @EnableScheduling
 public class Notbot2Application {
 
