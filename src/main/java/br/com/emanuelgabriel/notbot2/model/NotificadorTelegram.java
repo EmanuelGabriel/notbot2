@@ -26,7 +26,6 @@ public class NotificadorTelegram extends TelegramLongPollingBot implements Notif
         this.telegramProperties = telegramProperties;
     }
 
-
     @Override
     public void enviarMensagem(String titulo, String link, final String dataPublicacao) {
         try {
