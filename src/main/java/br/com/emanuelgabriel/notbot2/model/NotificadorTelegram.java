@@ -1,6 +1,7 @@
 package br.com.emanuelgabriel.notbot2.model;
 
 
+import org.springframework.beans.factory.annotation.Value;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -17,6 +18,18 @@ public class NotificadorTelegram extends TelegramLongPollingBot implements Notif
 
     private static final Logger LOGGER = Logger.getLogger(NotificadorTelegram.class.getName());
 
+    @Value("${prop.telegram.chatId}")
+    private static String chatIdTelegram;
+
+    @Value("${prop.telegram.botToken}")
+    private static String tokenTelegram;
+
+    @Value("${prop.telegram.botUsername}")
+    private static String botUsernameTelegram;
+
+    @Value("${prop.telegram.url-api}")
+    private static String urlTelegram;
+
     public NotificadorTelegram() {
     }
 
@@ -27,7 +40,7 @@ public class NotificadorTelegram extends TelegramLongPollingBot implements Notif
             var texto = String.format("Novo vídeo: **%s** (Publicado em: %s) 🔗 %s", titulo, dataPublicacao, link);
 
             var sendMessage = new SendMessage();
-            sendMessage.setChatId("30888055");
+            sendMessage.setChatId(chatIdTelegram);
             sendMessage.setText(texto);
             sendMessage.enableMarkdown(true);
 
@@ -45,7 +58,7 @@ public class NotificadorTelegram extends TelegramLongPollingBot implements Notif
      */
     @Override
     public String getBotUsername() {
-        return "TesteSala57";
+        return botUsernameTelegram;
     }
 
     /**
@@ -55,7 +68,7 @@ public class NotificadorTelegram extends TelegramLongPollingBot implements Notif
      */
     @Override
     public String getBotToken() {
-        return "5632032958:AAEwkfO5MwrkfljMRzOD7UJRRMMVeWvlK-c";
+        return tokenTelegram;
     }
 
     /**

@@ -3,6 +3,7 @@ package br.com.emanuelgabriel.notbot2.scheduler;
 
 import br.com.emanuelgabriel.notbot2.model.NotificadorTelegram;
 import org.jsoup.Jsoup;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -25,7 +26,13 @@ public class JobVerificacaoVideosCanal {
     private static final Logger LOGGER = Logger.getLogger(JobVerificacaoVideosCanal.class.getName());
     private static final Set<String> notificaVideos = new HashSet<>();
 
-    @Scheduled(fixedRate = 60000)
+    @Value("${prop.youtube.feed-url}")
+    private static String URL_CANAL;
+
+    @Value("${prop.youtube.channelId}")
+    private static String ID_CANAL;
+
+    @Scheduled(cron = "${prop.cron.time}")
     public void verificarNovosVideos() {
         LOGGER.info("Job/Início -> iniciando verificação de novos vídeos...");
 
@@ -37,10 +44,8 @@ public class JobVerificacaoVideosCanal {
     private static void verificarNovosVideosDaSala57() {
         try {
 
-            final String channelId = "UCaAxyxJLvQ5kKoQoV5O1cuw";
-
             // Conectar ao feed RSS e obter o documento
-            var doc = Jsoup.connect("https://www.youtube.com/feeds/videos.xml?channel_id=".concat(channelId)).get();
+            var doc = Jsoup.connect(URL_CANAL.concat("=").concat(ID_CANAL)).get();
 
             var entry = doc.selectFirst("entry");
             if (entry == null) {

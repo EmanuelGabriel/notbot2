@@ -10,6 +10,18 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      # Variáveis de ambiente para o bot
+
+      # Configurações do YouTube
+      ENV_CRON_TIME: ${{ secrets.ENV_CRON_TIME }} # A CADA 5 MINUTOS
+      ENV_YOUTUBE_CHANNEL_ID: ${{ secrets.ENV_YOUTUBE_CHANNEL_ID }}
+
+      ## Configurações do Telegram
+      ENV_TELEGRAM_CHAT_ID: ${{ secrets.ENV_TELEGRAM_CHAT_ID }}
+      ENV_TELEGRAM_BOT_USERNAME: ${{ secrets.ENV_TELEGRAM_BOT_USERNAME }}
+      ENV_TELEGRAM_BOT_TOKEN: ${{ secrets.ENV_TELEGRAM_BOT_TOKEN }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
