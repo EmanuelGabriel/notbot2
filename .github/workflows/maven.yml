@@ -13,6 +13,9 @@ jobs:
     env:
       # Variáveis de ambiente para o bot
 
+      # Porta
+      PORT: ${{ secrets.PORT }}
+
       # Configurações do YouTube
       ENV_CRON_TIME: ${{ secrets.ENV_CRON_TIME }} # A CADA 5 MINUTOS
       ENV_YOUTUBE_CHANNEL_ID: ${{ secrets.ENV_YOUTUBE_CHANNEL_ID }}
