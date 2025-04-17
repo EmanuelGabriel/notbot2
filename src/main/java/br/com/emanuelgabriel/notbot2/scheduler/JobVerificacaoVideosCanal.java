@@ -2,6 +2,7 @@ package br.com.emanuelgabriel.notbot2.scheduler;
 
 
 import br.com.emanuelgabriel.notbot2.model.NotificadorTelegram;
+import br.com.emanuelgabriel.notbot2.storage.FileStorage;
 import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -10,7 +11,6 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.logging.Level;
@@ -24,13 +24,13 @@ import java.util.logging.Logger;
 public class JobVerificacaoVideosCanal {
 
     private static final Logger LOGGER = Logger.getLogger(JobVerificacaoVideosCanal.class.getName());
-    private static final Set<String> notificaVideos = new HashSet<>();
+    private static final Set<String> notificaVideos = FileStorage.carregarIds();
 
-    @Value("${prop.youtube.feed-url}")
-    private static String URL_CANAL;
+    @Value("${prop.youtube.feedUrl}")
+    private String URL_CANAL;
 
     @Value("${prop.youtube.channelId}")
-    private static String ID_CANAL;
+    private String ID_CANAL;
 
     @Scheduled(cron = "${prop.cron.time}")
     public void verificarNovosVideos() {
@@ -41,11 +41,13 @@ public class JobVerificacaoVideosCanal {
         LOGGER.info("Job/Fim -> verificação de novos vídeos concluída com sucesso...");
     }
 
-    private static void verificarNovosVideosDaSala57() {
+    private void verificarNovosVideosDaSala57() {
         try {
 
             // Conectar ao feed RSS e obter o documento
-            var doc = Jsoup.connect(URL_CANAL.concat("=").concat(ID_CANAL)).get();
+            var url = URL_CANAL.concat("=").concat(ID_CANAL);
+
+            var doc = Jsoup.connect(url).get();
 
             var entry = doc.selectFirst("entry");
             if (entry == null) {
@@ -63,13 +65,16 @@ public class JobVerificacaoVideosCanal {
             var dataPublicacao = publishedDateTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
             if (!notificaVideos.contains(videoId)) {
-                LOGGER.info(String.format("Novo vídeo encontrado: %s (Publicado em: %s) %s", title, dataPublicacao, link));
+                LOGGER.info(String.format("Novo vídeo encontrado: %s (Publicado em: %s)", title, dataPublicacao));
 
                 // Enviar notificação via Telegram
                 var notificador = new NotificadorTelegram();
                 notificador.enviarMensagem(title, link, dataPublicacao);
 
                 notificaVideos.add(videoId);
+
+                FileStorage.salvarIds(notificaVideos);
+
             } else {
                 LOGGER.info(String.format("Nenhum novo vídeo publicado na data %s.", dataPublicacao));
             }

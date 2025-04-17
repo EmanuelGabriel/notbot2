@@ -19,16 +19,13 @@ public class NotificadorTelegram extends TelegramLongPollingBot implements Notif
     private static final Logger LOGGER = Logger.getLogger(NotificadorTelegram.class.getName());
 
     @Value("${prop.telegram.chatId}")
-    private static String chatIdTelegram;
+    private String chatIdTelegram;
 
     @Value("${prop.telegram.botToken}")
-    private static String tokenTelegram;
+    private String tokenTelegram;
 
     @Value("${prop.telegram.botUsername}")
-    private static String botUsernameTelegram;
-
-    @Value("${prop.telegram.url-api}")
-    private static String urlTelegram;
+    private String botUsernameTelegram;
 
     public NotificadorTelegram() {
     }
