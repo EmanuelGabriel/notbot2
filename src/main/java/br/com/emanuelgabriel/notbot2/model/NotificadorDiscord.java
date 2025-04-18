@@ -49,9 +49,9 @@ public class NotificadorDiscord implements Notificador {
     @Override
     public void enviarMensagem(String titulo, String link, String dataPublicacao) {
 
-        var publishedDateTime = OffsetDateTime.parse(dataPublicacao).toLocalDateTime();
-        var dataFormatada = publishedDateTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        var jsonPayload = String.format("{\"content\": \"Novo vídeo publicado: **%s** (Publicado em: %s)\\n🔗 %s\\n\\n\"}", titulo, dataFormatada, link);
+//        var publishedDateTime = OffsetDateTime.parse(dataPublicacao).toLocalDateTime();
+//        var dataFormatada = publishedDateTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        var jsonPayload = String.format("{\"content\": \"Novo vídeo publicado: **%s** (Publicado em: %s)\\n🔗 %s\\n\\n\"}", titulo, dataPublicacao, link);
 
         try {
 
