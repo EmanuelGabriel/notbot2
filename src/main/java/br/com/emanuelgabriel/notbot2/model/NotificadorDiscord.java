@@ -8,8 +8,6 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -49,8 +47,6 @@ public class NotificadorDiscord implements Notificador {
     @Override
     public void enviarMensagem(String titulo, String link, String dataPublicacao) {
 
-//        var publishedDateTime = OffsetDateTime.parse(dataPublicacao).toLocalDateTime();
-//        var dataFormatada = publishedDateTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         var jsonPayload = String.format("{\"content\": \"Novo vídeo publicado: **%s** (Publicado em: %s)\\n🔗 %s\\n\\n\"}", titulo, dataPublicacao, link);
 
         try {
@@ -66,7 +62,6 @@ public class NotificadorDiscord implements Notificador {
 
         } catch (IOException | InterruptedException e) {
             LOGGER.log(Level.SEVERE, "Erro ao enviar notificação para Discord: {0}", e.getMessage());
-            Thread.currentThread().interrupt();
         }
 
     }
