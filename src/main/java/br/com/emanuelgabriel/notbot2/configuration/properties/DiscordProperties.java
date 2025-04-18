@@ -6,13 +6,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConfigurationProperties(prefix = "prop.youtube")
+@ConfigurationProperties(prefix = "prop.discord")
 @Getter
 @Setter
-public class YoutubeProperties {
+public class DiscordProperties {
 
-    private String feedUrl;
-    private String channelId;
-
-
+    private String webhookUrl;
 }

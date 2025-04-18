@@ -24,6 +24,9 @@ jobs:
       ENV_TELEGRAM_BOT_USERNAME: ${{ secrets.ENV_TELEGRAM_BOT_USERNAME }}
       ENV_TELEGRAM_BOT_TOKEN: ${{ secrets.ENV_TELEGRAM_BOT_TOKEN }}
 
+      ## Configurações do Discord
+      ENV_DISCORD_WEBHOOK_URL: ${{ secrets.ENV_DISCORD_WEBHOOK_URL }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

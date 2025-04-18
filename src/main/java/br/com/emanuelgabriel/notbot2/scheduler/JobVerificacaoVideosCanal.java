@@ -24,11 +24,11 @@ public class JobVerificacaoVideosCanal {
 
     @Scheduled(cron = "${prop.cron.time}")
     public void verificarNovosVideos() {
-        LOGGER.info("Job/Início -> iniciando verificação de novos vídeos...");
+        LOGGER.info("Job/Inicializado -> iniciando verificação de novos vídeos...");
 
         verificadorVideosService.verificarNovosVideosDaSala57();
 
-        LOGGER.info("Job/Fim -> verificação de novos vídeos concluída com sucesso...");
+        LOGGER.info("Job/Finalizado -> verificação de novos vídeos concluída com sucesso...");
     }
 
 }

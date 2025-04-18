@@ -1,6 +1,7 @@
 package br.com.emanuelgabriel.notbot2.service;
 
 import br.com.emanuelgabriel.notbot2.configuration.properties.YoutubeProperties;
+import br.com.emanuelgabriel.notbot2.model.NotificadorDiscord;
 import br.com.emanuelgabriel.notbot2.model.NotificadorTelegram;
 import br.com.emanuelgabriel.notbot2.storage.FileStorage;
 import org.jsoup.Jsoup;
@@ -21,10 +22,12 @@ public class VerificadorVideosService {
     private static final Set<String> notificaVideos = FileStorage.carregarIds();
 
     private final NotificadorTelegram notificadorTelegram;
+    private final NotificadorDiscord notificadorDiscord;
     private final YoutubeProperties youtubeProperties;
 
-    public VerificadorVideosService(NotificadorTelegram notificadorTelegram, YoutubeProperties youtubeProperties) {
+    public VerificadorVideosService(NotificadorTelegram notificadorTelegram, NotificadorDiscord notificadorDiscord, YoutubeProperties youtubeProperties) {
         this.notificadorTelegram = notificadorTelegram;
+        this.notificadorDiscord = notificadorDiscord;
         this.youtubeProperties = youtubeProperties;
     }
 
@@ -56,6 +59,9 @@ public class VerificadorVideosService {
 
                 // Enviar notificação via Telegram
                 notificadorTelegram.enviarMensagem(title, link, dataPublicacao);
+
+                // Enviar notificação via Discord
+                notificadorDiscord.enviarMensagem(title, link, dataPublicacao);
 
                 notificaVideos.add(videoId);
 
