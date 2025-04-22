@@ -12,7 +12,7 @@ jobs:
     environment: dev
 
     env:
-      # Variáveis de ambiente para o bot
+      # Variáveis de ambiente DEV
 
       # Porta
       PORT: ${{ secrets.PORT }}
