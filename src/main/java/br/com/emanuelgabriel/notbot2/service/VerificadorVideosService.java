@@ -5,6 +5,8 @@ import br.com.emanuelgabriel.notbot2.model.NotificadorDiscord;
 import br.com.emanuelgabriel.notbot2.model.NotificadorTelegram;
 import br.com.emanuelgabriel.notbot2.storage.FileStorage;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
