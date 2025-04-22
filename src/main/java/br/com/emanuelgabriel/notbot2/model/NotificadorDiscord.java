@@ -57,7 +57,7 @@ public class NotificadorDiscord implements Notificador {
 
             var response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 204) {
-                LOGGER.log(Level.INFO, "Notificação enviada com sucesso para o Discord");
+                LOGGER.log(Level.INFO, "Notificação no Discord enviada com sucesso!");
             } else {
                 LOGGER.log(Level.SEVERE, String.format("Falha ao enviar mensagem para o Discord: %s - %s", response.statusCode(), response.body()));
             }

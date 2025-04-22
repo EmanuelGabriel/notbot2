@@ -39,7 +39,7 @@ public class NotificadorTelegram extends TelegramLongPollingBot implements Notif
 
             execute(sendMessage);
 
-            LOGGER.log(Level.INFO, "Notificação enviada com sucesso para o Telegram.");
+            LOGGER.log(Level.INFO, "Notificação no Telegram enviada com sucesso!");
 
         } catch (TelegramApiException e) {
             LOGGER.log(Level.SEVERE, "Erro: {0}", e.getMessage());
