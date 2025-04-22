@@ -1,4 +1,4 @@
-name: Build pipeline NotBot2 Production
+name: Build pipeline Production
 
 on:
   push:
