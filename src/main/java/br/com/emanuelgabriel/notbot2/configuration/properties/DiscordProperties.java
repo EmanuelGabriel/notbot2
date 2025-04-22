@@ -11,5 +11,6 @@ import org.springframework.context.annotation.Configuration;
 @Setter
 public class DiscordProperties {
 
-    private String webhookUrl;
+    private String urlApi;
+    private String webhook;
 }

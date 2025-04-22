@@ -16,16 +16,18 @@ jobs:
       # Porta
       PORT: ${{ secrets.PORT }}
 
-      # Configurações do YouTube
-      ENV_CRON_TIME: ${{ secrets.ENV_CRON_TIME }} # A CADA 5 MINUTOS
+      # Config do YouTube
+      ENV_CRON_TIME: ${{ secrets.ENV_CRON_TIME }}
 
-      ## Configurações do Telegram
+      ## Config Telegram
       ENV_TELEGRAM_CHAT_ID: ${{ secrets.ENV_TELEGRAM_CHAT_ID }}
       ENV_TELEGRAM_BOT_USERNAME: ${{ secrets.ENV_TELEGRAM_BOT_USERNAME }}
       ENV_TELEGRAM_BOT_TOKEN: ${{ secrets.ENV_TELEGRAM_BOT_TOKEN }}
 
-      ## Configurações do Discord
-      ENV_DISCORD_WEBHOOK_URL: ${{ secrets.ENV_DISCORD_WEBHOOK_URL }}
+      ## Config Discord
+      ENV_DISCORD_URL_API: ${{ secrets.ENV_DISCORD_URL_API }}
+      ENV_DISCORD_WEBHOOK: ${{ secrets.ENV_DISCORD_WEBHOOK }}
+
 
     steps:
       - name: Checkout code

@@ -51,7 +51,9 @@ public class NotificadorDiscord implements Notificador {
 
         try {
 
-            var request = HttpRequest.newBuilder().uri(URI.create(discordProperties.getWebhookUrl())).header("Content-Type", CONTENT_TYPE).POST(HttpRequest.BodyPublishers.ofString(jsonPayload)).build();
+            var urlApi = discordProperties.getUrlApi();
+            var urlWebhook = urlApi.concat(discordProperties.getWebhook());
+            var request = HttpRequest.newBuilder().uri(URI.create(urlWebhook)).header("Content-Type", CONTENT_TYPE).POST(HttpRequest.BodyPublishers.ofString(jsonPayload)).build();
 
             var response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 204) {

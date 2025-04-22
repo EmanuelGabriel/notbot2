@@ -77,4 +77,5 @@ public class NotificadorTelegram extends TelegramLongPollingBot implements Notif
             LOGGER.log(Level.INFO, "Mensagem recebida: {0}", chatId);
         }
     }
+
 }
