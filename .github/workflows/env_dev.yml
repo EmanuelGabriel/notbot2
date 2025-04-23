@@ -17,6 +17,8 @@ jobs:
       # Porta
       PORT: ${{ secrets.PORT }}
 
+      ENV_PING_URL: ${{ secrets.ENV_PING_URL }}
+
       # Config do YouTube
       ENV_CRON_TIME: ${{ secrets.ENV_CRON_TIME }}
 
