@@ -19,4 +19,10 @@ public class IndexController {
     public ResponseEntity<?> index() {
         return ResponseEntity.ok(new MensagemDTO("UP! NotBot2 API"));
     }
+
+    @GetMapping("/health")
+    public ResponseEntity<?> health() {
+        return ResponseEntity.ok("OK");
+    }
+
 }
