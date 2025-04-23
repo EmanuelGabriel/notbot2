@@ -30,12 +30,12 @@ public class NotificadorTelegram extends TelegramLongPollingBot implements Notif
     public void enviarMensagem(String titulo, String link, final String dataPublicacao) {
         try {
 
-            var texto = String.format("Novo vídeo: *%s* (Publicado em: %s) 🔗 %s", titulo, dataPublicacao, link);
+            var texto = String.format("Novo vídeo: %s (Publicado em: %s) %s", titulo, dataPublicacao, link);
+            LOGGER.log(Level.INFO, "Texto a ser enviado: {0}", texto);
 
             var sendMessage = new SendMessage();
             sendMessage.setChatId(telegramProperties.getChatId());
             sendMessage.setText(texto);
-            sendMessage.enableMarkdown(true);
 
             execute(sendMessage);
 
