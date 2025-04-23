@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
  */
 
 @RestController
-@RequestMapping(value = "/api/v1", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/v1", produces = MediaType.APPLICATION_JSON_VALUE)
 public class IndexController {
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<?> index() {
         return ResponseEntity.ok(new MensagemDTO("UP! NotBot2 API"));
     }
