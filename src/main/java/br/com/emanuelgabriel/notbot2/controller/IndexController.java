@@ -21,7 +21,7 @@ public class IndexController {
     }
 
     @GetMapping("/health")
-    public ResponseEntity<?> health() {
+    public ResponseEntity<String> health() {
         return ResponseEntity.ok("OK");
     }
 
