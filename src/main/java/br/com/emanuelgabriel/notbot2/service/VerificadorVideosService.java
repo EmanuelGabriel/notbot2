@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Level;
@@ -44,53 +46,49 @@ public class VerificadorVideosService {
                 return;
             }
 
-            for (var entry : entries) {
+            var maisRecenteComViews = entries.stream()
+                    .filter(entry -> getViews(entry) > 0) // filtra só os vídeos quem tem/possui views > 0. Ou seja, descarta todos os vídeos sem visualizações.
+                    .flatMap(entry -> getTextFromTag(entry, "published").stream().map(published -> Map.entry(entry, OffsetDateTime.parse(published)))) // Se não tiver "published", simplesmente ignora
+                    .max(Comparator.comparing(Map.Entry::getValue)) // Busca o entry cujo OffsetDateTime (data publicada) é o mais recente (.max). Ou seja, compara as datas e pega a maior.
+                    .map(Map.Entry::getKey)
+                    .orElse(null);
 
-                try {
+            if (maisRecenteComViews == null) {
+                LOGGER.warning("Nenhum vídeo com data de publicação válida encontrado.");
+                return;
+            }
 
-                    // Extrair informações básicas com validação
-                    String videoId = getTextFromTag(entry, "id").orElse(null);
-                    String title = getTextFromTag(entry, "title").orElse("Título indisponível");
-                    String link = getAttrFromTag(entry).orElse(null);
-                    String publishedDate = getTextFromTag(entry, "published").orElse(null);
+            try {
 
-                    if (videoId == null || link == null || publishedDate == null) {
-                        LOGGER.warning("Dados incompletos para o vídeo: " + title + ". Ignorando...");
-                        continue;
-                    }
+                // Extrair informações
+                String videoId = getTextFromTag(maisRecenteComViews, "id").orElse(null);
+                String title = getTextFromTag(maisRecenteComViews, "title").orElse("Título indisponível");
+                String link = getAttrFromTag(maisRecenteComViews).orElse(null);
+                String publishedDate = getTextFromTag(maisRecenteComViews, "published").orElse(null);
 
-                    long views = getViews(entry);
-                    if (views == 0) {
-                        LOGGER.info("Vídeo ignorado (sem visualizações ainda): " + title);
-                        continue;
-                    }
-
-                    // Formatar data de publicação
-                    var publishedDateTime = OffsetDateTime.parse(publishedDate);
-
-                    // Se a data de publicação for no futuro, ignorar
-                    if (publishedDateTime.isAfter(OffsetDateTime.now())) {
-                        LOGGER.info("Vídeo ignorado (programado para o futuro e/ou sem visualizações): " + title);
-                        continue;
-                    }
-
-                    var dataPublicacao = publishedDateTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-
-                    // Verificar se já foi notificado
-                    if (!notificaVideos.contains(videoId)) {
-                        LOGGER.info(String.format("Novo vídeo encontrado: %s (Publicado em: %s | Views: %d)", title, dataPublicacao, views));
-
-                        notificadorTelegram.enviarMensagem(title, link, dataPublicacao);
-                        notificadorDiscord.enviarMensagem(title, link, dataPublicacao);
-
-                        notificaVideos.add(videoId);
-                        FileStorage.salvarIds(notificaVideos);
-                    } else {
-                        LOGGER.info(String.format("Vídeo já notificado anteriormente: %s (Data: %s)", title, dataPublicacao));
-                    }
-                } catch (Exception e) {
-                    LOGGER.log(Level.WARNING, "Erro ao processar vídeo: " + e.getMessage(), e);
+                if (videoId == null || link == null || publishedDate == null) {
+                    LOGGER.warning(String.format("Dados incompletos para o vídeo: %s. Ignorando...", title));
+                    return;
                 }
+
+                var publishedDateTime = OffsetDateTime.parse(publishedDate);
+                var dataPublicacao = publishedDateTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+
+                if (!notificaVideos.contains(videoId)) {
+                    LOGGER.info(String.format("Novo vídeo encontrado: %s (Publicado em: %s)", title, dataPublicacao));
+
+                    notificadorTelegram.enviarMensagem(title, link, dataPublicacao);
+                    notificadorDiscord.enviarMensagem(title, link, dataPublicacao);
+
+                    notificaVideos.add(videoId);
+                    FileStorage.salvarIds(notificaVideos);
+
+                } else {
+                    LOGGER.info(String.format("Vídeo já notificado anteriormente: %s - (Data/Publicação: %s)", title, dataPublicacao));
+                }
+
+            } catch (Exception e) {
+                LOGGER.log(Level.WARNING, "Erro ao processar vídeo: " + e.getMessage(), e);
             }
 
         } catch (IOException e) {
