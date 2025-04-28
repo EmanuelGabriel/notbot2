@@ -1,0 +1,55 @@
+name: Build feat Development
+
+on:
+  push:
+    branches: [ "feat/sem-selectfirts" ]
+  pull_request:
+    branches: [ "feat/sem-selectfirts" ]
+
+jobs:
+  build-dev:
+    runs-on: ubuntu-latest
+    environment: dev
+
+    env:
+      # Variáveis de ambiente DEV
+
+      # Porta
+      PORT: ${{ secrets.PORT }}
+
+      ENV_PING_URL: ${{ secrets.ENV_PING_URL }}
+
+      # Config do YouTube
+      ENV_CRON_TIME: ${{ secrets.ENV_CRON_TIME }}
+
+      ## Config Telegram
+      ENV_TELEGRAM_CHAT_ID: ${{ secrets.ENV_TELEGRAM_CHAT_ID }}
+      ENV_TELEGRAM_BOT_USERNAME: ${{ secrets.ENV_TELEGRAM_BOT_USERNAME }}
+      ENV_TELEGRAM_BOT_TOKEN: ${{ secrets.ENV_TELEGRAM_BOT_TOKEN }}
+
+      ## Config Discord
+      ENV_DISCORD_URL_API: ${{ secrets.ENV_DISCORD_URL_API }}
+      ENV_DISCORD_WEBHOOK: ${{ secrets.ENV_DISCORD_WEBHOOK }}
+
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v4
+        with:
+          java-version: "11"
+          distribution: "temurin"
+          cache: maven
+
+      - name: Build Project with Maven
+        run: mvn clean install -DskipTests=false
+
+        # Configurar e testa o projeto
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+        # Constrói a imagem Docker
+      - name: Build Docker Image
+        run: docker build -t notbot2 .
