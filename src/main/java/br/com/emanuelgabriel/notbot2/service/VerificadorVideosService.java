@@ -49,7 +49,7 @@ public class VerificadorVideosService {
             var maisRecenteComViews = entries.stream()
                     .filter(entry -> getViews(entry) > 0) // filtra só os vídeos quem tem/possui views > 0. Ou seja, descarta todos os vídeos sem visualizações.
                     .flatMap(entry -> getTextFromTag(entry, "published").stream().map(published -> Map.entry(entry, OffsetDateTime.parse(published)))) // Se não tiver "published", simplesmente ignora
-                    .max(Comparator.comparing(Map.Entry::getValue)) // Busca o entry cujo OffsetDateTime (data publicada) é o mais recente (.max). Ou seja, compara as datas e pega a maior.
+                    .max(Map.Entry.comparingByValue()) // Busca o entry cujo OffsetDateTime (data publicada) é o mais recente (.max). Ou seja, compara as datas e pega a maior.
                     .map(Map.Entry::getKey)
                     .orElse(null);
 
