@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Comparator;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -47,9 +46,12 @@ public class VerificadorVideosService {
             }
 
             var maisRecenteComViews = entries.stream()
-                    .filter(entry -> getViews(entry) > 0) // filtra só os vídeos quem tem/possui views > 0. Ou seja, descarta todos os vídeos sem visualizações.
-                    .flatMap(entry -> getTextFromTag(entry, "published").stream().map(published -> Map.entry(entry, OffsetDateTime.parse(published)))) // Se não tiver "published", simplesmente ignora
-                    .max(Map.Entry.comparingByValue()) // Busca o entry cujo OffsetDateTime (data publicada) é o mais recente (.max). Ou seja, compara as datas e pega a maior.
+                    // filtra só os vídeos quem tem/possui views > 0. Ou seja, descarta todos os vídeos sem visualizações.
+                    .filter(entry -> getViews(entry) > 0)
+                    // Se não tiver "published", simplesmente ignora
+                    .flatMap(entry -> getTextFromTag(entry, "published").stream().map(published -> Map.entry(entry, OffsetDateTime.parse(published))))
+                    // Busca o entry cujo OffsetDateTime (data publicada) é o mais recente (.max). Ou seja, compara as datas e pega a maior.
+                    .max(Map.Entry.comparingByValue())
                     .map(Map.Entry::getKey)
                     .orElse(null);
 
