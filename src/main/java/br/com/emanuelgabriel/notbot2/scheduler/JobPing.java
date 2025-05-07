@@ -18,7 +18,6 @@ import java.util.logging.Logger;
 public class JobPing {
 
     private static final Logger LOGGER = Logger.getLogger(JobPing.class.getName());
-
     private final HttpClient httpClient = HttpClient.newHttpClient();
 
     @Value("${prop.pingUrl}")
@@ -38,13 +37,14 @@ public class JobPing {
 
     private void pingToServer() {
         try {
+
             var request = HttpRequest.newBuilder()
                     .uri(URI.create(PING_URL))
                     .GET()
                     .build();
 
             var response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            LOGGER.log(Level.INFO, "✅ ping enviado com sucesso! Status: {0}", response.statusCode());
+            LOGGER.log(Level.INFO, "✅ ping enviado com sucesso! Resposta: {0}", response.body());
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "❌ Erro ao enviar ping: {0}", e.getMessage());
         }
