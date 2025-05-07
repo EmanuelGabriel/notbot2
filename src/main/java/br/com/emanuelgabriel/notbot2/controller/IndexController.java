@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * @author Emanuel Gabriel
  */
@@ -17,14 +20,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/v1", produces = MediaType.APPLICATION_JSON_VALUE)
 public class IndexController {
 
+    private static final Logger logger = Logger.getLogger(IndexController.class.getName());
+
     @GetMapping
     public ResponseEntity<?> index() {
+        logger.log(Level.INFO, "GET /v1/");
         return ResponseEntity.ok(new MensagemDTO("UP! NotBot2 API"));
     }
 
     @GetMapping("/health")
     public ResponseEntity<HealthDTO> health() {
-        return ResponseEntity.ok(new HealthDTO("OK", HttpStatus.OK.toString()));
+        logger.log(Level.INFO, "GET /v1/health");
+        return ResponseEntity.ok(new HealthDTO());
     }
 
 }

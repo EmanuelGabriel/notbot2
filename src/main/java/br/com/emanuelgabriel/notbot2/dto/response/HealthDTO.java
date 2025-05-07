@@ -2,14 +2,18 @@ package br.com.emanuelgabriel.notbot2.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import org.springframework.http.HttpStatus;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 public class HealthDTO {
 
     private String mensagem;
     private String status;
+
+    public HealthDTO() {
+        this.mensagem = "OK";
+        this.status = HttpStatus.OK.toString();
+    }
 
 }
