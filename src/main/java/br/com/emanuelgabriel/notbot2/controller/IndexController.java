@@ -2,6 +2,8 @@ package br.com.emanuelgabriel.notbot2.controller;
 
 import br.com.emanuelgabriel.notbot2.dto.response.HealthDTO;
 import br.com.emanuelgabriel.notbot2.dto.response.MensagemDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,9 @@ public class IndexController {
 
     private static final Logger logger = Logger.getLogger(IndexController.class.getName());
 
+    @Autowired
+    private Environment environment;
+
     @GetMapping
     public ResponseEntity<?> index() {
         logger.log(Level.INFO, "GET /v1/");
@@ -31,7 +36,7 @@ public class IndexController {
     @GetMapping("/health")
     public ResponseEntity<HealthDTO> health() {
         logger.log(Level.INFO, "GET /v1/health");
-        return ResponseEntity.ok(new HealthDTO());
+        return ResponseEntity.ok(new HealthDTO(environment));
     }
 
 }
