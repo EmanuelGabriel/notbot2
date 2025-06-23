@@ -14,19 +14,19 @@ import java.util.logging.Logger;
 /**
  * @author Emanuel Gabriel
  */
-@Component
+//@Component
 public class JobPing {
 
     private static final Logger LOGGER = Logger.getLogger(JobPing.class.getName());
     private final HttpClient httpClient = HttpClient.newHttpClient();
 
-    @Value("${prop.pingUrl}")
+//    @Value("${prop.pingUrl}")
     private String PING_URL;
 
     /**
      * Método responsável por enviar um ping para o servidor a cada 45 segundos.
      */
-    @Scheduled(fixedRate = 45000)
+//    @Scheduled(fixedRate = 45000)
     public void ping() {
         LOGGER.info("Job/Ping -> inicializado...");
 

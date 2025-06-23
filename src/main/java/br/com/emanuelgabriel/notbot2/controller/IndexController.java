@@ -1,8 +1,6 @@
 package br.com.emanuelgabriel.notbot2.controller;
 
-import br.com.emanuelgabriel.notbot2.dto.response.HealthDTO;
 import br.com.emanuelgabriel.notbot2.dto.response.MensagemDTO;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,9 +20,9 @@ public class IndexController {
         return ResponseEntity.ok(new MensagemDTO("UP! NotBot2 API"));
     }
 
-    @GetMapping("/health")
-    public ResponseEntity<HealthDTO> health() {
-        return ResponseEntity.ok(new HealthDTO("OK", HttpStatus.OK.toString()));
-    }
+//    @GetMapping("/health")
+//    public ResponseEntity<HealthDTO> health() {
+//        return ResponseEntity.ok(new HealthDTO("OK", HttpStatus.OK.toString()));
+//    }
 
 }
