@@ -20,9 +20,5 @@ public class IndexController {
         return ResponseEntity.ok(new MensagemDTO("UP! NotBot2 API"));
     }
 
-//    @GetMapping("/health")
-//    public ResponseEntity<HealthDTO> health() {
-//        return ResponseEntity.ok(new HealthDTO("OK", HttpStatus.OK.toString()));
-//    }
 
 }
