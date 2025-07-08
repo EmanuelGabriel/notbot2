@@ -22,7 +22,7 @@ public class JobVerificacaoVideosCanal {
         this.verificadorVideosService = verificadorVideosService;
     }
 
-    @Scheduled(cron = "${prop.cron.time}")
+    @Scheduled(cron = "${prop.cron.time}", zone = "America/Sao_Paulo")
     public void verificarNovosVideos() {
         LOGGER.info("Job/Inicializado -> iniciando verificação de novos vídeos...");
 
